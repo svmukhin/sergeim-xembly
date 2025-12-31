@@ -99,6 +99,19 @@ public sealed class Directives : IEnumerable<IDirective>
     }
 
     /// <summary>
+    /// Navigates to nodes using XPath expression.
+    /// </summary>
+    /// <param name="expression">The XPath expression to evaluate.</param>
+    /// <returns>This instance for method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when expression is null.</exception>
+    public Directives XPath(string expression)
+    {
+        ArgumentNullException.ThrowIfNull(expression);
+        _directives.Add(new XPathDirective(expression));
+        return this;
+    }
+
+    /// <summary>
     /// Gets the count of directives in this collection.
     /// </summary>
     public int Count => _directives.Count;
