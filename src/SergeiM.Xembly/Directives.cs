@@ -140,6 +140,68 @@ public sealed class Directives : IEnumerable<IDirective>
     }
 
     /// <summary>
+    /// Adds a new child node only if it doesn't already exist.
+    /// </summary>
+    /// <param name="name">The name of the node to add.</param>
+    /// <returns>This instance for method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when name is null.</exception>
+    public Directives AddIf(string name)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+        _directives.Add(new AddIfDirective(name));
+        return this;
+    }
+
+    /// <summary>
+    /// Sets CDATA section as node content.
+    /// </summary>
+    /// <param name="value">The CDATA text value.</param>
+    /// <returns>This instance for method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when value is null.</exception>
+    public Directives CData(string value)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        _directives.Add(new CDataDirective(value));
+        return this;
+    }
+
+    /// <summary>
+    /// Adds a processing instruction.
+    /// </summary>
+    /// <param name="target">The processing instruction target.</param>
+    /// <param name="data">The processing instruction data.</param>
+    /// <returns>This instance for method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when target or data is null.</exception>
+    public Directives Pi(string target, string data)
+    {
+        ArgumentNullException.ThrowIfNull(target);
+        ArgumentNullException.ThrowIfNull(data);
+        _directives.Add(new PiDirective(target, data));
+        return this;
+    }
+
+    /// <summary>
+    /// Validates that cursor has nodes.
+    /// </summary>
+    /// <returns>This instance for method chaining.</returns>
+    public Directives Strict()
+    {
+        _directives.Add(new StrictDirective());
+        return this;
+    }
+
+    /// <summary>
+    /// Validates that cursor has exactly the specified number of nodes.
+    /// </summary>
+    /// <param name="count">The expected number of nodes.</param>
+    /// <returns>This instance for method chaining.</returns>
+    public Directives Strict(int count)
+    {
+        _directives.Add(new StrictDirective(count));
+        return this;
+    }
+
+    /// <summary>
     /// Gets the count of directives in this collection.
     /// </summary>
     public int Count => _directives.Count;
