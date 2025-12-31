@@ -112,6 +112,34 @@ public sealed class Directives : IEnumerable<IDirective>
     }
 
     /// <summary>
+    /// Sets text content using XPath evaluation.
+    /// </summary>
+    /// <param name="expression">The XPath expression to evaluate for the text value.</param>
+    /// <returns>This instance for method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when expression is null.</exception>
+    public Directives XSet(string expression)
+    {
+        ArgumentNullException.ThrowIfNull(expression);
+        _directives.Add(new XSetDirective(expression));
+        return this;
+    }
+
+    /// <summary>
+    /// Sets attribute value using XPath evaluation.
+    /// </summary>
+    /// <param name="name">The attribute name.</param>
+    /// <param name="expression">The XPath expression to evaluate for the attribute value.</param>
+    /// <returns>This instance for method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when name or expression is null.</exception>
+    public Directives XAttr(string name, string expression)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(expression);
+        _directives.Add(new XAttrDirective(name, expression));
+        return this;
+    }
+
+    /// <summary>
     /// Gets the count of directives in this collection.
     /// </summary>
     public int Count => _directives.Count;
