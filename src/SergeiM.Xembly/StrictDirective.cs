@@ -46,6 +46,6 @@ public sealed class StrictDirective : IDirective
     }
 
     /// <inheritdoc/>
-    public override string ToString() => 
+    public override string ToString() =>
         _expectedCount == -1 ? "STRICT" : $"STRICT {_expectedCount}";
 }
