@@ -34,7 +34,7 @@ public sealed class Xembler
         ArgumentNullException.ThrowIfNull(document);
         var initialNodes = document.DocumentElement != null
             ? [document.DocumentElement]
-            : new XmlNode[] { document };        
+            : new XmlNode[] { document };
         var cursor = new Cursor(document, initialNodes);
         foreach (var directive in _directives)
         {
