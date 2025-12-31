@@ -10,4 +10,7 @@
         <PackageReference Include="MSTest.TestFramework" />
         <PackageReference Include="coverlet.collector" />
     </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\SergeiM.Xembly\SergeiM.Xembly.csproj" />
+    </ItemGroup>
 </Project>
