@@ -66,20 +66,20 @@ Much simpler than DOM manipulation or XSLT transformations!
 
 ## Supported Directives
 
-| Directive | Description | Example |
-|-----------|-------------|---------|
-| `ADD` | Adds new child node | `.Add("order")` |
-| `ADDIF` | Adds child node if not exists | `.AddIf("order")` |
-| `SET` | Sets text content | `.Set("$140.00")` |
-| `ATTR` | Sets attribute | `.Attr("id", "553")` |
-| `UP` | Moves to parent | `.Up()` |
-| `REMOVE` | Removes nodes | `.Remove()` |
-| `XPATH` | Navigate using XPath | `.XPath("//order[@id='553']")` |
-| `XSET` | Set text from XPath | `.XSet("count(//order)")` |
-| `XATTR` | Set attribute from XPath | `.XAttr("total", "sum(//price)")` |
-| `CDATA` | Add CDATA section | `.CData("<script>...</script>")` |
-| `PI` | Add processing instruction | `.Pi("xml-stylesheet", "type='text/xsl'")` |
-| `STRICT` | Validate cursor state | `.Strict(1)` |
+| Directive | Description                   | Example                                    |
+| --------- | ----------------------------- | ------------------------------------------ |
+| `ADD`     | Adds new child node           | `.Add("order")`                            |
+| `ADDIF`   | Adds child node if not exists | `.AddIf("order")`                          |
+| `SET`     | Sets text content             | `.Set("$140.00")`                          |
+| `ATTR`    | Sets attribute                | `.Attr("id", "553")`                       |
+| `UP`      | Moves to parent               | `.Up()`                                    |
+| `REMOVE`  | Removes nodes                 | `.Remove()`                                |
+| `XPATH`   | Navigate using XPath          | `.XPath("//order[@id='553']")`             |
+| `XSET`    | Set text from XPath           | `.XSet("count(//order)")`                  |
+| `XATTR`   | Set attribute from XPath      | `.XAttr("total", "sum(//price)")`          |
+| `CDATA`   | Add CDATA section             | `.CData("<script>...</script>")`           |
+| `PI`      | Add processing instruction    | `.Pi("xml-stylesheet", "type='text/xsl'")` |
+| `STRICT`  | Validate cursor state         | `.Strict(1)`                               |
 
 ## More Examples
 
@@ -155,13 +155,13 @@ catch (StrictException ex)
 
 ## Exception Types
 
-| Exception | Description | Usage |
-|-----------|-------------|-------|
-| `XemblyException` | Base exception for all Xembly errors | Catch-all for any Xembly operation |
-| `ParsingException` | Script parsing errors with line/column info | Invalid script syntax |
-| `CursorException` | Cursor operation errors | Invalid navigation, empty cursor |
-| `StrictException` | Validation failures | STRICT directive violations |
-| `DirectiveException` | Directive execution errors | Failed directive operations |
+| Exception            | Description                                 | Usage                              |
+| -------------------- | ------------------------------------------- | ---------------------------------- |
+| `XemblyException`    | Base exception for all Xembly errors        | Catch-all for any Xembly operation |
+| `ParsingException`   | Script parsing errors with line/column info | Invalid script syntax              |
+| `CursorException`    | Cursor operation errors                     | Invalid navigation, empty cursor   |
+| `StrictException`    | Validation failures                         | STRICT directive violations        |
+| `DirectiveException` | Directive execution errors                  | Failed directive operations        |
 
 ### Modifying Existing Documents
 
