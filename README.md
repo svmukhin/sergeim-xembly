@@ -127,6 +127,42 @@ var xml = new Xembler(directives).Xml();
 // Output: <root><item>First</item><item>Second</item></root>
 ```
 
+### Error Handling
+
+```csharp
+try
+{
+    var directives = new Directives("INVALID 'test';");
+    new Xembler(directives).Xml();
+}
+catch (ParsingException ex)
+{
+    Console.WriteLine($"Parse error at line {ex.Line}, column {ex.Column}: {ex.Message}");
+}
+
+try
+{
+    var directives = new Directives()
+        .Add("root")
+        .Strict(2); // Expecting 2 nodes, but only have 1
+    new Xembler(directives).Xml();
+}
+catch (StrictException ex)
+{
+    Console.WriteLine($"Validation error: {ex.Message}");
+}
+```
+
+## Exception Types
+
+| Exception | Description | Usage |
+|-----------|-------------|-------|
+| `XemblyException` | Base exception for all Xembly errors | Catch-all for any Xembly operation |
+| `ParsingException` | Script parsing errors with line/column info | Invalid script syntax |
+| `CursorException` | Cursor operation errors | Invalid navigation, empty cursor |
+| `StrictException` | Validation failures | STRICT directive violations |
+| `DirectiveException` | Directive execution errors | Failed directive operations |
+
 ### Modifying Existing Documents
 
 ```csharp

@@ -74,3 +74,72 @@ public class CursorException : XemblyException
     {
     }
 }
+
+/// <summary>
+/// Exception thrown when parsing Xembly script fails.
+/// </summary>
+public class ParsingException : XemblyException
+{
+    /// <summary>
+    /// Gets the line number where the error occurred.
+    /// </summary>
+    public int Line { get; }
+
+    /// <summary>
+    /// Gets the column number where the error occurred.
+    /// </summary>
+    public int Column { get; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ParsingException"/> class.
+    /// </summary>
+    /// <param name="message">The error message.</param>
+    /// <param name="line">The line number where the error occurred.</param>
+    /// <param name="column">The column number where the error occurred.</param>
+    public ParsingException(string message, int line, int column) : base($"{message} at line {line}, column {column}")
+    {
+        Line = line;
+        Column = column;
+    }
+}
+
+/// <summary>
+/// Exception thrown when directive execution fails.
+/// </summary>
+public class DirectiveException : XemblyException
+{
+    /// <summary>
+    /// Gets the directive that caused the exception.
+    /// </summary>
+    public string? DirectiveName { get; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DirectiveException"/> class.
+    /// </summary>
+    /// <param name="message">The error message.</param>
+    public DirectiveException(string message) : base(message)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DirectiveException"/> class.
+    /// </summary>
+    /// <param name="message">The error message.</param>
+    /// <param name="directiveName">The name of the directive that failed.</param>
+    public DirectiveException(string message, string directiveName) : base($"{directiveName}: {message}")
+    {
+        DirectiveName = directiveName;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DirectiveException"/> class.
+    /// </summary>
+    /// <param name="message">The error message.</param>
+    /// <param name="directiveName">The name of the directive that failed.</param>
+    /// <param name="innerException">The inner exception.</param>
+    public DirectiveException(string message, string directiveName, Exception innerException) 
+        : base($"{directiveName}: {message}", innerException)
+    {
+        DirectiveName = directiveName;
+    }
+}

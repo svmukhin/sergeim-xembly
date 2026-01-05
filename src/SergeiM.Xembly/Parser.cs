@@ -10,6 +10,8 @@ internal sealed class Parser
 {
     private readonly string _script;
     private int _position;
+    private int _line = 1;
+    private int _column = 1;
     private readonly List<IDirective> _directives = [];
 
     public Parser(string script)
@@ -20,35 +22,65 @@ internal sealed class Parser
 
     public IEnumerable<IDirective> Parse()
     {
-        while (_position < _script.Length)
+        try
         {
-            SkipWhitespaceAndComments();
-            if (_position >= _script.Length)
-                break;
-            var directive = ParseDirective();
-            if (directive != null)
+            while (_position < _script.Length)
             {
-                _directives.Add(directive);
+                SkipWhitespaceAndComments();
+                if (_position >= _script.Length)
+                    break;
+                var directive = ParseDirective();
+                if (directive != null)
+                {
+                    _directives.Add(directive);
+                }
             }
+            return _directives;
         }
-        return _directives;
+        catch (ParsingException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw new ParsingException($"Parsing failed: {ex.Message}", _line, _column);
+        }
     }
+
+    private void Advance()
+    {
+        if (_position < _script.Length)
+        {
+            if (_script[_position] == '\n')
+            {
+                _line++;
+                _column = 1;
+            }
+            else
+            {
+                _column++;
+            }
+            _position++;
+        }
+    }
+
+    private char CurrentChar => _position < _script.Length ? _script[_position] : '\0';
 
     private void SkipWhitespaceAndComments()
     {
         while (_position < _script.Length)
         {
-            var ch = _script[_position];
+            var ch = CurrentChar;
             if (char.IsWhiteSpace(ch))
             {
-                _position++;
+                Advance();
                 continue;
             }
             if (ch == '#' || (_position + 1 < _script.Length && ch == '/' && _script[_position + 1] == '/'))
             {
-                while (_position < _script.Length && _script[_position] != '\n')
+                while (_position < _script.Length && CurrentChar != '\n')
                 {
-                    _position++;
+                    Advance();
                 }
                 continue;
             }
@@ -61,28 +93,39 @@ internal sealed class Parser
         var directiveName = ReadToken();
         if (string.IsNullOrEmpty(directiveName))
             return null;
-        IDirective? directive = directiveName.ToUpperInvariant() switch
+        try
         {
-            "ADD" => new AddDirective(ReadArgument()),
-            "ADDIF" => new AddIfDirective(ReadArgument()),
-            "SET" => new SetDirective(ReadArgument()),
-            "ATTR" => ParseAttr(),
-            "XATTR" => ParseXAttr(),
-            "XSET" => new XSetDirective(ReadArgument()),
-            "XPATH" => new XPathDirective(ReadArgument()),
-            "UP" => new UpDirective(),
-            "REMOVE" => new RemoveDirective(),
-            "CDATA" => new CDataDirective(ReadArgument()),
-            "PI" => ParsePi(),
-            "STRICT" => ParseStrict(),
-            _ => throw new XemblyException($"Unknown directive: {directiveName}")
-        };
-        SkipWhitespaceAndComments();
-        if (_position < _script.Length && _script[_position] == ';')
-        {
-            _position++;
+            IDirective? directive = directiveName.ToUpperInvariant() switch
+            {
+                "ADD" => new AddDirective(ReadArgument()),
+                "ADDIF" => new AddIfDirective(ReadArgument()),
+                "SET" => new SetDirective(ReadArgument()),
+                "ATTR" => ParseAttr(),
+                "XATTR" => ParseXAttr(),
+                "XSET" => new XSetDirective(ReadArgument()),
+                "XPATH" => new XPathDirective(ReadArgument()),
+                "UP" => new UpDirective(),
+                "REMOVE" => new RemoveDirective(),
+                "CDATA" => new CDataDirective(ReadArgument()),
+                "PI" => ParsePi(),
+                "STRICT" => ParseStrict(),
+                _ => throw new ParsingException($"Unknown directive: {directiveName}", _line, _column)
+            };
+            SkipWhitespaceAndComments();
+            if (_position < _script.Length && CurrentChar == ';')
+            {
+                Advance();
+            }
+            return directive;
         }
-        return directive;
+        catch (ParsingException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw new ParsingException($"Failed to parse {directiveName} directive: {ex.Message}", _line, _column);
+        }
     }
 
     private string ReadToken()
@@ -90,9 +133,9 @@ internal sealed class Parser
         SkipWhitespaceAndComments();
         var start = _position;
         while (_position < _script.Length && 
-               (char.IsLetterOrDigit(_script[_position]) || _script[_position] == '_'))
+               (char.IsLetterOrDigit(CurrentChar) || CurrentChar == '_'))
         {
-            _position++;
+            Advance();
         }
         return _script[start.._position];
     }
@@ -101,8 +144,8 @@ internal sealed class Parser
     {
         SkipWhitespaceAndComments();        
         if (_position >= _script.Length)
-            throw new XemblyException("Expected argument but reached end of script");
-        var ch = _script[_position];
+            throw new ParsingException("Expected argument but reached end of script", _line, _column);
+        var ch = CurrentChar;
         if (ch == '\'' || ch == '"')
         {
             return ReadQuotedString();
@@ -110,24 +153,26 @@ internal sealed class Parser
         var start = _position;
         while (_position < _script.Length)
         {
-            ch = _script[_position];
+            ch = CurrentChar;
             if (char.IsWhiteSpace(ch) || ch == ',' || ch == ';')
                 break;
-            _position++;
+            Advance();
         }
         return _script[start.._position];
     }
 
     private string ReadQuotedString()
     {
-        var quote = _script[_position];
-        _position++;
+        var quote = CurrentChar;
+        var startLine = _line;
+        var startColumn = _column;
+        Advance();
         var result = new System.Text.StringBuilder();
         var escaped = false;
         while (_position < _script.Length)
         {
-            var ch = _script[_position];
-            _position++;
+            var ch = CurrentChar;
+            Advance();
             if (escaped)
             {
                 result.Append(ch switch
@@ -155,16 +200,16 @@ internal sealed class Parser
                 result.Append(ch);
             }
         }
-        throw new XemblyException($"Unterminated string starting at position {_position}");
+        throw new ParsingException($"Unterminated string", startLine, startColumn);
     }
 
     private AttrDirective ParseAttr()
     {
         var name = ReadArgument();
         SkipWhitespaceAndComments();
-        if (_position < _script.Length && _script[_position] == ',')
+        if (_position < _script.Length && CurrentChar == ',')
         {
-            _position++;
+            Advance();
         }        
         var value = ReadArgument();
         return new AttrDirective(name, value);
@@ -174,9 +219,9 @@ internal sealed class Parser
     {
         var name = ReadArgument();
         SkipWhitespaceAndComments();
-        if (_position < _script.Length && _script[_position] == ',')
+        if (_position < _script.Length && CurrentChar == ',')
         {
-            _position++;
+            Advance();
         }        
         var expression = ReadArgument();
         return new XAttrDirective(name, expression);
@@ -186,9 +231,9 @@ internal sealed class Parser
     {
         var target = ReadArgument();
         SkipWhitespaceAndComments();
-        if (_position < _script.Length && _script[_position] == ',')
+        if (_position < _script.Length && CurrentChar == ',')
         {
-            _position++;
+            Advance();
         }        
         var data = ReadArgument();
         return new PiDirective(target, data);
@@ -199,7 +244,7 @@ internal sealed class Parser
         SkipWhitespaceAndComments();
         if (_position < _script.Length)
         {
-            var ch = _script[_position];
+            var ch = CurrentChar;
             if (char.IsDigit(ch))
             {
                 var countStr = ReadArgument();

@@ -215,16 +215,18 @@ public class ParserTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(XemblyException))]
     public void TestParseThrowsOnUnknownDirective()
     {
-        new Directives("INVALID 'test';");
+        var ex = Assert.ThrowsException<ParsingException>(() => new Directives("INVALID 'test';"));
+        Assert.AreEqual(1, ex.Line);
+        Assert.IsTrue(ex.Column > 0);
     }
 
     [TestMethod]
-    [ExpectedException(typeof(XemblyException))]
     public void TestParseThrowsOnUnterminatedString()
     {
-        new Directives("ADD 'unterminated");
+        var ex = Assert.ThrowsException<ParsingException>(() => new Directives("ADD 'unterminated"));
+        Assert.AreEqual(1, ex.Line);
+        Assert.IsTrue(ex.Column > 0);
     }
 }
