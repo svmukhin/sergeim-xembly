@@ -66,7 +66,7 @@ public class ParserTests
             ADD 'root'
             SET 'value'
             """;
-        var xml = new Xembler(new Directives(script)).Xml();        
+        var xml = new Xembler(new Directives(script)).Xml();
         Assert.IsTrue(xml.Contains("<root"), "Should contain root");
         Assert.IsTrue(xml.Contains("value"), "Should contain value");
     }

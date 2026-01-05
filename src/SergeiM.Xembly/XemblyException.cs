@@ -137,7 +137,7 @@ public class DirectiveException : XemblyException
     /// <param name="message">The error message.</param>
     /// <param name="directiveName">The name of the directive that failed.</param>
     /// <param name="innerException">The inner exception.</param>
-    public DirectiveException(string message, string directiveName, Exception innerException) 
+    public DirectiveException(string message, string directiveName, Exception innerException)
         : base($"{directiveName}: {message}", innerException)
     {
         DirectiveName = directiveName;

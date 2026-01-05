@@ -132,7 +132,7 @@ internal sealed class Parser
     {
         SkipWhitespaceAndComments();
         var start = _position;
-        while (_position < _script.Length && 
+        while (_position < _script.Length &&
                (char.IsLetterOrDigit(CurrentChar) || CurrentChar == '_'))
         {
             Advance();
@@ -142,7 +142,7 @@ internal sealed class Parser
 
     private string ReadArgument()
     {
-        SkipWhitespaceAndComments();        
+        SkipWhitespaceAndComments();
         if (_position >= _script.Length)
             throw new ParsingException("Expected argument but reached end of script", _line, _column);
         var ch = CurrentChar;
@@ -210,7 +210,7 @@ internal sealed class Parser
         if (_position < _script.Length && CurrentChar == ',')
         {
             Advance();
-        }        
+        }
         var value = ReadArgument();
         return new AttrDirective(name, value);
     }
@@ -222,7 +222,7 @@ internal sealed class Parser
         if (_position < _script.Length && CurrentChar == ',')
         {
             Advance();
-        }        
+        }
         var expression = ReadArgument();
         return new XAttrDirective(name, expression);
     }
@@ -234,7 +234,7 @@ internal sealed class Parser
         if (_position < _script.Length && CurrentChar == ',')
         {
             Advance();
-        }        
+        }
         var data = ReadArgument();
         return new PiDirective(target, data);
     }
@@ -257,7 +257,7 @@ internal sealed class Parser
             {
                 return new StrictDirective();
             }
-        }        
+        }
         return new StrictDirective();
     }
 }
