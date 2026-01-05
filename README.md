@@ -69,12 +69,48 @@ Much simpler than DOM manipulation or XSLT transformations!
 | Directive | Description | Example |
 |-----------|-------------|---------|
 | `ADD` | Adds new child node | `.Add("order")` |
+| `ADDIF` | Adds child node if not exists | `.AddIf("order")` |
 | `SET` | Sets text content | `.Set("$140.00")` |
 | `ATTR` | Sets attribute | `.Attr("id", "553")` |
 | `UP` | Moves to parent | `.Up()` |
 | `REMOVE` | Removes nodes | `.Remove()` |
+| `XPATH` | Navigate using XPath | `.XPath("//order[@id='553']")` |
+| `XSET` | Set text from XPath | `.XSet("count(//order)")` |
+| `XATTR` | Set attribute from XPath | `.XAttr("total", "sum(//price)")` |
+| `CDATA` | Add CDATA section | `.CData("<script>...</script>")` |
+| `PI` | Add processing instruction | `.Pi("xml-stylesheet", "type='text/xsl'")` |
+| `STRICT` | Validate cursor state | `.Strict(1)` |
 
 ## More Examples
+
+### Using Script Syntax
+
+```csharp
+var directives = new Directives("""
+    ADD 'orders';
+    ADD 'order';
+    ATTR 'id', '553';
+    ADD 'amount';
+    SET '$140.00';
+    """);
+
+var xml = new Xembler(directives).Xml();
+// Output: <orders><order id="553"><amount>$140.00</amount></order></orders>
+```
+
+### XPath Navigation
+
+```csharp
+var directives = new Directives()
+    .Add("root")
+    .Add("order").Attr("id", "1").Set("100").Up()
+    .Add("order").Attr("id", "2").Set("200").Up()
+    .XPath("//order[@id='2']")
+    .Set("250");
+
+var xml = new Xembler(directives).Xml();
+// Changes the value of order with id='2' to 250
+```
 
 ### Multiple Nodes
 

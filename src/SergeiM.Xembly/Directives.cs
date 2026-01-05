@@ -29,12 +29,11 @@ public sealed class Directives : IEnumerable<IDirective>
     /// </summary>
     /// <param name="script">The Xembly script to parse.</param>
     /// <exception cref="ArgumentNullException">Thrown when script is null.</exception>
+    /// <exception cref="XemblyException">Thrown when script parsing fails.</exception>
     public Directives(string script)
     {
         ArgumentNullException.ThrowIfNull(script);
-        _directives = [];
-        // TODO: Implement parsing in Phase 5
-        throw new NotImplementedException("Script parsing will be implemented in Phase 5");
+        _directives = [.. new Parser(script).Parse()];
     }
 
     /// <summary>
