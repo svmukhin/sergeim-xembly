@@ -1,41 +1,34 @@
 // SPDX-FileCopyrightText: Copyright (c) [2025] [Sergei Mukhin]
 // SPDX-License-Identifier: MIT
 
-using System.Xml;
 using System.Xml.XPath;
+using SergeiM.Xembly.Exceptions;
 
-namespace SergeiM.Xembly;
+namespace SergeiM.Xembly.Directive.XPath;
 
 /// <summary>
-/// XATTR directive - sets attribute value using XPath evaluation.
+/// XSET directive - sets text content using XPath evaluation.
 /// </summary>
 /// <remarks>
-/// Syntax: XATTR 'name', 'xpath-expression'
-/// Evaluates the XPath expression and uses the result as the attribute value for current nodes.
+/// Syntax: XSET 'xpath-expression'
+/// Evaluates the XPath expression and uses the result as the text content for current nodes.
 /// </remarks>
-public sealed class XAttrDirective : IDirective
+public sealed class XSetDirective : IDirective
 {
-    private readonly string _name;
     private readonly string _expression;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="XAttrDirective"/> class.
+    /// Initializes a new instance of the <see cref="XSetDirective"/> class.
     /// </summary>
-    /// <param name="name">The attribute name.</param>
     /// <param name="expression">The XPath expression to evaluate.</param>
-    /// <exception cref="ArgumentNullException">Thrown when name or expression is null.</exception>
-    /// <exception cref="ArgumentException">Thrown when name or expression is empty or whitespace.</exception>
-    public XAttrDirective(string name, string expression)
+    /// <exception cref="ArgumentNullException">Thrown when expression is null.</exception>
+    /// <exception cref="ArgumentException">Thrown when expression is empty or whitespace.</exception>
+    public XSetDirective(string expression)
     {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            throw new ArgumentException("Attribute name cannot be empty or whitespace.", nameof(name));
-        }
         if (string.IsNullOrWhiteSpace(expression))
         {
             throw new ArgumentException("XPath expression cannot be empty or whitespace.", nameof(expression));
         }
-        _name = name;
         _expression = expression;
     }
 
@@ -45,47 +38,43 @@ public sealed class XAttrDirective : IDirective
         ArgumentNullException.ThrowIfNull(cursor);
         if (!cursor.HasNodes)
         {
-            throw new CursorException("Cannot execute XATTR: cursor has no current nodes");
+            throw new CursorException("Cannot execute XSET: cursor has no current nodes");
         }
         try
         {
             foreach (var node in cursor.Nodes)
             {
-                if (node is not XmlElement element)
-                {
-                    throw new XemblyException($"Cannot set attribute on node type {node.NodeType}");
-                }
                 var navigator = node.CreateNavigator() ?? throw new XemblyException($"Cannot create navigator for node '{node.Name}'");
                 var result = navigator.Evaluate(_expression);
-                string attrValue;
+                string textValue;
                 if (result is string str)
                 {
-                    attrValue = str;
+                    textValue = str;
                 }
                 else if (result is double dbl)
                 {
-                    attrValue = dbl.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    textValue = dbl.ToString(System.Globalization.CultureInfo.InvariantCulture);
                 }
                 else if (result is bool bln)
                 {
-                    attrValue = bln.ToString().ToLowerInvariant();
+                    textValue = bln.ToString().ToLowerInvariant();
                 }
                 else if (result is XPathNodeIterator iterator)
                 {
                     if (iterator.MoveNext())
                     {
-                        attrValue = iterator.Current?.Value ?? string.Empty;
+                        textValue = iterator.Current?.Value ?? string.Empty;
                     }
                     else
                     {
-                        attrValue = string.Empty;
+                        textValue = string.Empty;
                     }
                 }
                 else
                 {
-                    attrValue = result?.ToString() ?? string.Empty;
+                    textValue = result?.ToString() ?? string.Empty;
                 }
-                element.SetAttribute(_name, attrValue);
+                node.InnerText = textValue;
             }
         }
         catch (XPathException ex)
@@ -95,5 +84,5 @@ public sealed class XAttrDirective : IDirective
     }
 
     /// <inheritdoc/>
-    public override string ToString() => $"XATTR '{_name}', '{_expression}'";
+    public override string ToString() => $"XSET '{_expression}'";
 }

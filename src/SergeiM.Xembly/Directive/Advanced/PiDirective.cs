@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: Copyright (c) [2025] [Sergei Mukhin]
 // SPDX-License-Identifier: MIT
 
-using System.Xml;
+using SergeiM.Xembly.Exceptions;
 
-namespace SergeiM.Xembly;
+namespace SergeiM.Xembly.Directive.Advanced;
 
 /// <summary>
 /// PI directive - adds a processing instruction.

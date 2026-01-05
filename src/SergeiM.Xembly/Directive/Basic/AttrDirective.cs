@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 using System.Xml;
+using SergeiM.Xembly.Exceptions;
 
-namespace SergeiM.Xembly;
+namespace SergeiM.Xembly.Directive.Basic;
 
 /// <summary>
 /// ATTR directive - sets an attribute on current nodes.

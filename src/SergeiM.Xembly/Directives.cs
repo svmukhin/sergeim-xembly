@@ -2,6 +2,11 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
+using SergeiM.Xembly.Directive.Advanced;
+using SergeiM.Xembly.Directive.Basic;
+using SergeiM.Xembly.Directive.XPath;
+using SergeiM.Xembly.Exceptions;
+using SergeiM.Xembly.Parsing;
 
 namespace SergeiM.Xembly;
 

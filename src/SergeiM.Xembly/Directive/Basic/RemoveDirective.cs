@@ -1,7 +1,9 @@
 // SPDX-FileCopyrightText: Copyright (c) [2025] [Sergei Mukhin]
 // SPDX-License-Identifier: MIT
 
-namespace SergeiM.Xembly;
+using SergeiM.Xembly.Exceptions;
+
+namespace SergeiM.Xembly.Directive.Basic;
 
 /// <summary>
 /// REMOVE directive - removes all current nodes from the document.

@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 using System.Xml;
+using SergeiM.Xembly.Exceptions;
 
-namespace SergeiM.Xembly;
+namespace SergeiM.Xembly.Directive.Basic;
 
 /// <summary>
 /// UP directive - moves the cursor to parent nodes.

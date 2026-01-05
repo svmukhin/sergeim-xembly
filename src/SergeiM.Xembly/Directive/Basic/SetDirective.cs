@@ -1,7 +1,9 @@
 // SPDX-FileCopyrightText: Copyright (c) [2025] [Sergei Mukhin]
 // SPDX-License-Identifier: MIT
 
-namespace SergeiM.Xembly;
+using SergeiM.Xembly.Exceptions;
+
+namespace SergeiM.Xembly.Directive.Basic;
 
 /// <summary>
 /// SET directive - sets the text content of current nodes.

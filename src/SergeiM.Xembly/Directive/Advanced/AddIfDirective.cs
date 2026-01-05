@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 using System.Xml;
+using SergeiM.Xembly.Exceptions;
 
-namespace SergeiM.Xembly;
+namespace SergeiM.Xembly.Directive.Advanced;
 
 /// <summary>
 /// ADDIF directive - adds a new child node only if it doesn't already exist.

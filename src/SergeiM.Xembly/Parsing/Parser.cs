@@ -1,7 +1,12 @@
 // SPDX-FileCopyrightText: Copyright (c) [2025] [Sergei Mukhin]
 // SPDX-License-Identifier: MIT
 
-namespace SergeiM.Xembly;
+using SergeiM.Xembly.Directive.Advanced;
+using SergeiM.Xembly.Directive.Basic;
+using SergeiM.Xembly.Directive.XPath;
+using SergeiM.Xembly.Exceptions;
+
+namespace SergeiM.Xembly.Parsing;
 
 /// <summary>
 /// Parses Xembly script text into directives.

@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: MIT
 
 using System.Xml;
+using SergeiM.Xembly.Directive.Basic;
+using SergeiM.Xembly.Exceptions;
 
-namespace SergeiM.Xembly.Tests;
+namespace SergeiM.Xembly.Tests.DirectiveTests;
 
 [TestClass]
 public class AddDirectiveTests

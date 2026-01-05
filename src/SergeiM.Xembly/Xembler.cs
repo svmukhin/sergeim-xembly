@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Xml;
+using SergeiM.Xembly.Exceptions;
 
 namespace SergeiM.Xembly;
 

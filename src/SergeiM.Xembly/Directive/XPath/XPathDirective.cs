@@ -3,8 +3,9 @@
 
 using System.Xml;
 using System.Xml.XPath;
+using SergeiM.Xembly.Exceptions;
 
-namespace SergeiM.Xembly;
+namespace SergeiM.Xembly.Directive.XPath;
 
 /// <summary>
 /// XPATH directive - navigates to nodes using XPath expression.
