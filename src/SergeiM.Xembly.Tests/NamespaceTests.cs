@@ -45,7 +45,7 @@ public class NamespaceTests
         var doc = new XmlDocument();
         doc.LoadXml(xml);
         Assert.AreEqual("http://example1.com", doc.DocumentElement!.GetAttribute("xmlns:ns1"));
-        Assert.AreEqual("http://example2.com", doc.DocumentElement!.GetAttribute("xmlns:ns2"));        
+        Assert.AreEqual("http://example2.com", doc.DocumentElement!.GetAttribute("xmlns:ns2"));
         var child = doc.SelectSingleNode("//child") as XmlElement;
         Assert.AreEqual("http://example3.com", child!.GetAttribute("xmlns:ns3"));
     }
@@ -79,7 +79,7 @@ public class NamespaceTests
             ADD 'root';
             NS 'ns1', 'http://example1.com';
             NS 'ns2', 'http://example2.com';
-            """;        
+            """;
         var directives = new Directives(script);
         var xml = new Xembler(directives).Xml();
         var doc = new XmlDocument();
