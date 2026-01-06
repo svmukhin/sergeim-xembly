@@ -161,7 +161,6 @@ catch (StrictException ex)
 | `ParsingException`   | Script parsing errors with line/column info | Invalid script syntax              |
 | `CursorException`    | Cursor operation errors                     | Invalid navigation, empty cursor   |
 | `StrictException`    | Validation failures                         | STRICT directive violations        |
-| `DirectiveException` | Directive execution errors                  | Failed directive operations        |
 
 ### Modifying Existing Documents
 
