@@ -1,2 +1,36 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
-<Project Sdk="Microsoft.NET.Sdk" />
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <!-- Package Metadata -->
+        <PackageId>SergeiM.Xembly</PackageId>
+        <Description>Xembly is an Assembly-like imperative programming language for data manipulation in XML documents. A .NET port of the original Java Xembly library.</Description>
+        <Authors>Sergei Mukhin</Authors>
+        <Copyright>Copyright (c) 2025 Sergei Mukhin</Copyright>
+        <!-- Package Details -->
+        <PackageTags>xml;xembly;manipulation;xpath;fluent-api;document-builder</PackageTags>
+        <PackageProjectUrl>https://github.com/svmukhin/sergeim-xembly</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/svmukhin/sergeim-xembly</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <!-- Release Notes -->
+        <PackageReleaseNotes>See release notes at: https://github.com/svmukhin/sergeim-xembly/releases/tag/$(VersionPrefix)</PackageReleaseNotes>
+        <!-- Source Link -->
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <!-- Documentation -->
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="..\..\README.md"
+              Pack="true"
+              PackagePath="\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub"
+                          PrivateAssets="All" />
+    </ItemGroup>
+</Project>
