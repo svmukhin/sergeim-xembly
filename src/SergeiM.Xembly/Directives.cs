@@ -206,6 +206,21 @@ public sealed class Directives : IEnumerable<IDirective>
     }
 
     /// <summary>
+    /// Declares an XML namespace.
+    /// </summary>
+    /// <param name="prefix">The namespace prefix (empty string for default namespace).</param>
+    /// <param name="uri">The namespace URI.</param>
+    /// <returns>This instance for method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when prefix or uri is null.</exception>
+    public Directives Ns(string prefix, string uri)
+    {
+        ArgumentNullException.ThrowIfNull(prefix);
+        ArgumentNullException.ThrowIfNull(uri);
+        _directives.Add(new NsDirective(prefix, uri));
+        return this;
+    }
+
+    /// <summary>
     /// Gets the count of directives in this collection.
     /// </summary>
     public int Count => _directives.Count;

@@ -114,6 +114,7 @@ internal sealed class Parser
                 "CDATA" => new CDataDirective(ReadArgument()),
                 "PI" => ParsePi(),
                 "STRICT" => ParseStrict(),
+                "NS" => ParseNs(),
                 _ => throw new ParsingException($"Unknown directive: {directiveName}", _line, _column)
             };
             SkipWhitespaceAndComments();
@@ -264,5 +265,18 @@ internal sealed class Parser
             }
         }
         return new StrictDirective();
+    }
+
+    private NsDirective ParseNs()
+    {
+        var firstArg = ReadArgument();
+        SkipWhitespaceAndComments();
+        if (_position < _script.Length && CurrentChar == ',')
+        {
+            Advance();
+            var uri = ReadArgument();
+            return new NsDirective(firstArg, uri);
+        }
+        return new NsDirective("", firstArg);
     }
 }
