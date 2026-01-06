@@ -62,14 +62,14 @@ public class NsDirectiveTests
     }
 
     [TestMethod]
+    [ExpectedException(typeof(XemblyException))]
     public void Execute_ThrowsOnNonElementNode()
     {
         var doc = new XmlDocument();
         doc.LoadXml("<root>text</root>");
         var textNode = doc.DocumentElement!.FirstChild!;
         var cursor = new Cursor(doc, [textNode]);
-        var directive = new NsDirective("ex", "http://example.com/ns");
-        Assert.ThrowsException<DirectiveException>(() => directive.Execute(cursor));
+        new NsDirective("ex", "http://example.com/ns").Execute(cursor);
     }
 
     [TestMethod]

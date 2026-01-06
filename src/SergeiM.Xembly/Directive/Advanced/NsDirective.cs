@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: Copyright (c) [2025] [Sergei Mukhin]
 // SPDX-License-Identifier: MIT
 
+using SergeiM.Xembly.Directive.Basic;
 using SergeiM.Xembly.Exceptions;
 using System.Xml;
 
@@ -40,26 +41,19 @@ public sealed class NsDirective : IDirective
         }
         foreach (var node in cursor.Nodes)
         {
-            if (node is XmlElement element)
+            if (string.IsNullOrEmpty(_prefix))
             {
-                if (string.IsNullOrEmpty(_prefix))
-                {
-                    element.SetAttribute("xmlns", _uri);
-                }
-                else
-                {
-                    element.SetAttribute($"xmlns:{_prefix}", _uri);
-                }
+                new AttrDirective("xmlns", _uri).Execute(new Cursor(cursor.Document, [node]));
             }
             else
             {
-                throw new DirectiveException($"Cannot set namespace on node type: {node.NodeType}");
+                new AttrDirective($"xmlns:{_prefix}", _uri).Execute(new Cursor(cursor.Document, [node]));
             }
         }
     }
 
     /// <inheritdoc/>
-    public override string ToString() => string.IsNullOrEmpty(_prefix) 
-        ? $"NS('{_uri}')" 
+    public override string ToString() => string.IsNullOrEmpty(_prefix)
+        ? $"NS('{_uri}')"
         : $"NS('{_prefix}', '{_uri}')";
 }
