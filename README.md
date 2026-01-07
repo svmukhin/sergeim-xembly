@@ -82,7 +82,7 @@ Much simpler than DOM manipulation or XSLT transformations!
 | `CDATA`   | Add CDATA section             | `.CData("<script>...</script>")`           |
 | `PI`      | Add processing instruction    | `.Pi("xml-stylesheet", "type='text/xsl'")` |
 | `STRICT`  | Validate cursor state         | `.Strict(1)`                               |
-| `NS`      | Define XML namespace          | `.Ns("ns", "http://example.com/ns")`      |
+| `NS`      | Define XML namespace          | `.Ns("ns", "http://example.com/ns")`       |
 
 ## More Examples
 
