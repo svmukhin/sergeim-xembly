@@ -11,6 +11,7 @@ namespace SergeiM.Xembly;
 public sealed class Cursor : ICursor
 {
     private readonly List<XmlNode> _nodes;
+    private readonly Stack<List<XmlNode>> _stack = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Cursor"/> class with an XML document.
@@ -60,5 +61,27 @@ public sealed class Cursor : ICursor
         ArgumentNullException.ThrowIfNull(nodes);
         _nodes.Clear();
         _nodes.AddRange(nodes);
+    }
+
+    /// <summary>
+    /// Pushes the current cursor position onto the stack.
+    /// </summary>
+    public void Push()
+    {
+        _stack.Push([.. _nodes]);
+    }
+
+    /// <summary>
+    /// Pops the cursor position from the stack and restores it.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Thrown when the stack is empty.</exception>
+    public void Pop()
+    {
+        if (_stack.Count == 0)
+        {
+            throw new InvalidOperationException("Cannot pop from empty stack");
+        }
+        _nodes.Clear();
+        _nodes.AddRange(_stack.Pop());
     }
 }

@@ -45,4 +45,14 @@ public interface ICursor
     /// Gets the count of currently selected nodes.
     /// </summary>
     int Count { get; }
+
+    /// <summary>
+    /// Saves the current cursor position to a stack.
+    /// </summary>
+    void Push();
+
+    /// <summary>
+    /// Restores the cursor position from the stack.
+    /// </summary>
+    void Pop();
 }

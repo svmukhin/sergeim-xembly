@@ -111,6 +111,8 @@ internal sealed class Parser
                 "XPATH" => new XPathDirective(ReadArgument()),
                 "UP" => new UpDirective(),
                 "REMOVE" => new RemoveDirective(),
+                "PUSH" => new PushDirective(),
+                "POP" => new PopDirective(),
                 "CDATA" => new CDataDirective(ReadArgument()),
                 "PI" => ParsePi(),
                 "STRICT" => ParseStrict(),

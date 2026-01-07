@@ -103,6 +103,26 @@ public sealed class Directives : IEnumerable<IDirective>
     }
 
     /// <summary>
+    /// Saves current cursor position to stack.
+    /// </summary>
+    /// <returns>This instance for method chaining.</returns>
+    public Directives Push()
+    {
+        _directives.Add(new PushDirective());
+        return this;
+    }
+
+    /// <summary>
+    /// Restores cursor position from stack.
+    /// </summary>
+    /// <returns>This instance for method chaining.</returns>
+    public Directives Pop()
+    {
+        _directives.Add(new PopDirective());
+        return this;
+    }
+
+    /// <summary>
     /// Navigates to nodes using XPath expression.
     /// </summary>
     /// <param name="expression">The XPath expression to evaluate.</param>
