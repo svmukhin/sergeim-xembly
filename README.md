@@ -74,6 +74,8 @@ Much simpler than DOM manipulation or XSLT transformations!
 | `ATTR`    | Sets attribute                | `.Attr("id", "553")`                       |
 | `UP`      | Moves to parent               | `.Up()`                                    |
 | `REMOVE`  | Removes nodes                 | `.Remove()`                                |
+| `PUSH`    | Saves cursor position         | `.Push()`                                  |
+| `POP`     | Restores cursor position      | `.Pop()`                                   |
 | `XPATH`   | Navigate using XPath          | `.XPath("//order[@id='553']")`             |
 | `XSET`    | Set text from XPath           | `.XSet("count(//order)")`                  |
 | `XATTR`   | Set attribute from XPath      | `.XAttr("total", "sum(//price)")`          |
@@ -126,6 +128,25 @@ var directives = new Directives()
 
 var xml = new Xembler(directives).Xml();
 // Output: <root><item>First</item><item>Second</item></root>
+```
+
+### Stack Operations (PUSH/POP)
+
+Save and restore cursor position using stack operations:
+
+```csharp
+var directives = new Directives()
+    .Add("catalog")
+    .Add("books")
+    .Push()                      // Save position at <books>
+    .Add("book").Attr("id", "1")
+    .Add("title").Set("First Book").Up().Up()
+    .Pop()                       // Return to <books>
+    .Add("book").Attr("id", "2")
+    .Add("title").Set("Second Book");
+
+var xml = new Xembler(directives).Xml();
+// Both books are added under <books>, even though we navigated deep into the first book
 ```
 
 ### Error Handling
