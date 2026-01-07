@@ -1,6 +1,8 @@
+// SPDX-FileCopyrightText: Copyright (c) [2025] [Sergei Mukhin]
+// SPDX-License-Identifier: MIT
+
 using System.Xml;
 using SergeiM.Xembly.Exceptions;
-using SergeiM.Xembly.Parsing;
 
 namespace SergeiM.Xembly.Tests;
 
