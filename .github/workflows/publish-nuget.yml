@@ -35,6 +35,9 @@ jobs:
       - name: Test
         run: dotnet test --configuration Release --no-build --verbosity normal
         working-directory: ./src
+      - name: Pack
+        run: dotnet pack --configuration Release --no-build --output ./nupkg
+        working-directory: ./src
       - name: NuGet login (OIDC → temp API key)
         uses: NuGet/login@v1
         id: login
