@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/svmukhin/sergeim-xembly/compare/v0.2.1...v0.2.2) (2026-06-24)
+
+
+### Bug Fixes
+
+* **#6:** added pack step to publish action ([ab6df66](https://github.com/svmukhin/sergeim-xembly/commit/ab6df6636e325db33b3d5cdcbb0b785c307d1b0e))
+
 ## [0.2.1](https://github.com/svmukhin/sergeim-xembly/compare/0.2.0...v0.2.1) (2026-06-24)
 
 
