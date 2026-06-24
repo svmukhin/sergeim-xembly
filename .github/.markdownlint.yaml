@@ -1,7 +1,0 @@
-# SPDX-FileCopyrightText: Copyright (c) [2025-2026] [Sergei Mukhin]
-# SPDX-License-Identifier: MIT
----
-default: true
-MD013:
-  code_blocks: false
-  tables: false
