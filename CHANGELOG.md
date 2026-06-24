@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/svmukhin/sergeim-xembly/compare/v0.2.2...v0.2.3) (2026-06-24)
+
+
+### Miscellaneous
+
+* **#9:** fix version prefix in ReleasePackageNotes link ([0e786f3](https://github.com/svmukhin/sergeim-xembly/commit/0e786f36cd2b109949e144762985ea9c480a8e39))
+
 ## [0.2.2](https://github.com/svmukhin/sergeim-xembly/compare/v0.2.1...v0.2.2) (2026-06-24)
 
 
